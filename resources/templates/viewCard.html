@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Admin</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<!--===============================================================================================-->
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+			<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+			<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+		<!--===============================================================================================-->
+			<link rel="stylesheet" type="text/css" th:href="@{css/util.css}">
+			<link rel="stylesheet" type="text/css" th:href="@{css/main.css}">
+			<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+		<!--===============================================================================================-->
+	</head>
+	<body>
+		<!-- Header -->
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<div class="navbar-brand">
+				<span class="navbar-brand">Welcome</span>
+				<span class="navbar-brand" th:text="${adminName}"></span>
+			</div>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+				<li><a href = "home"><button  id = "home-button" type="button" class="btn btn-primary btn-sm">Home</button></a>
+				</li>
+				</ul>
+			
+			<a href = "logout"><button  id = "logout-button" type="button" class="btn btn-primary btn-sm">Logout</button></a>
+			</div>
+		</nav>
+		
+		<!-- To print details of all linked Cards -->
+		<div th:if="${#lists.isEmpty(linkedCards)}">
+			<nav class="navbar navbar-dark bg-primary">
+		    	<div class="navbar-brand">
+				<span class="navbar-brand">No Card Is Linked With Account Having Account Number : </span>
+				<span class="navbar-brand" th:text="${accountNumber}"></span>
+			</div>
+		    </nav>
+		</div>
+		
+		<div th:if="${not #lists.isEmpty(linkedCards)}">
+		    <nav class="navbar navbar-dark bg-primary">
+		    	<div class="navbar-brand">
+		    		<div class="navbar-brand">
+		    			<span class="navbar-brand">List Of Cards Linked With Account Having Account Number : </span>
+						<span class="navbar-brand" th:text="${accountNumber}"></span>
+		    		</div>
+		    	</div>
+		    </nav>
+		    <table class="table table-striped table-bordered">
+		    	<thead class="thead-dark">
+		        <tr>
+		            <th>Card Number</th>
+		            <th>Card Type</th>
+		            <th>Maximum Limit</th>
+		            <th>Expiry Date</th>
+		        </tr>
+		        <tr th:each="card : ${linkedCards}">
+		            <td th:text="${card.cardNumber}"></td>
+		            <td th:text="${card.cardType}"></td>
+		            <td th:text="${card.maximumLimit}"></td>
+		            <td th:text="${#dates.format(new java.util.Date(card.expiryDate))}"></td>   
+		        </tr>
+		    </table>
+		</div>
+		<!--===============================================================================================-->
+			<script th:src="@{js/bankingApp.js}"></script>
+		<!--===============================================================================================-->
+			<script th:src="@{vendor/jquery/jquery-3.2.1.min.js}"></script>
+		<!--===============================================================================================-->
+			<script th:src="@{vendor/animsition/js/animsition.min.js}"></script>
+		<!--===============================================================================================-->
+			<script th:src="@{vendor/bootstrap/js/popper.js}"></script>
+			<script th:src="@{vendor/bootstrap/js/bootstrap.min.js}"></script>
+		<!--===============================================================================================-->
+			<script th:src="@{vendor/select2/select2.min.js}"></script>
+		<!--===============================================================================================-->
+			<script th:src="@{vendor/daterangepicker/moment.min.js}"></script>
+			<script th:src="@{vendor/daterangepicker/daterangepicker.js}"></script>
+		<!--===============================================================================================-->
+			<script th:src="@{vendor/countdowntime/countdowntime.js}"></script>
+		<!--===============================================================================================-->
+			<script th:src="@{js/main.js}"></script>
+		<!--===============================================================================================-->
+	</body>
+</html>

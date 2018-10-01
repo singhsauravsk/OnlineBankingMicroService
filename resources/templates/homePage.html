@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Admin</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<!--===============================================================================================-->
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+			<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+			<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+		<!--===============================================================================================-->
+			<link rel="stylesheet" type="text/css" th:href="@{css/util.css}">
+			<link rel="stylesheet" type="text/css" th:href="@{css/main.css}">
+			<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+		<!--===============================================================================================-->
+	</head>
+	<body>
+		<!-- Header -->
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<div class="navbar-brand">
+				<span class="navbar-brand">Welcome</span>
+				<span class="navbar-brand" th:text="${adminName}"></span>
+			</div>
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+	
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+				</ul>
+				<div class="navbar-brand">
+					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createAccountModal">
+					  	Add Account
+					</button>
+				</div>
+				<div class="navbar-brand">
+					<form class="form-inline my-2 my-lg-0">
+						<input class="form-control mr-sm-2" type="text" placeholder="Search By Account Number" aria-label="Search">
+					    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+					</form>
+				</div>
+				<div class="navbar-brand">
+					<form class="form-inline my-2 my-lg-0">
+						<input class="form-control mr-sm-2" type="text" placeholder="Search By Holder Name" aria-label="Search">
+					    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+					</form>
+				</div>
+				<a href = "logout"><button  id = "logout-button" type="button" class="btn btn-primary btn-sm">Logout</button></a>
+			</div>
+		</nav>
+		
+		<!-- Create Account Modal -->
+		<div class="modal" id="createAccountModal" tabindex="-1" role="dialog" aria-labelledby="createAccountModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="createAccountModalLabel">Create New Account</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<!-- Create Account Modal Body -->
+					<div class="modal-body">
+						<form class="login100-form validate-form" id = "create-account-form">
+							<div class="wrap-input100 validate-input m-b-26" data-validate="Account holder name is required">
+								<span class="label-input100">Account Holder</span>
+								<input class="input100" id="holderName" type="text" placeholder="Account Holder Name">
+								<span class="focus-input100"></span>
+							</div>
+							<div class="wrap-input100 validate-input m-b-18" data-validate = "Account type is required">
+								<span class="label-input100">Account Type</span>
+								<input class="input100" type="text" id="accountType" placeholder="Account Type">
+								<span class="focus-input100"></span>
+							</div>
+							<div class="container-login100-form-btn">
+								<button class="login100-form-btn">
+									Create New Account
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- To print details of all accounts -->
+		<div th:if="${not #lists.isEmpty(allAccounts)}">
+		    <nav class="navbar navbar-dark bg-primary">
+		    	<div class="navbar-brand">
+		    		<h3><span class="badge badge-info">Account List</span></h3>
+		    	</div>
+		    </nav>
+		    <table class="table table-striped table-bordered">
+		    	<thead class="thead-dark">
+		        <tr>
+		            <th>Account Number</th>
+		            <th>Name</th>
+		            <th>Account Type</th>
+		            <th>Opening Date</th>
+		            <th>Amount</th>
+		            <th>Add Card</th>
+		            <th>View Cards</th>
+		        </tr>
+		        <tr th:each="account : ${allAccounts}">
+		            <td th:text="${account.accountNumber}"></td>
+		            <td th:text="${account.holderName}"></td>
+		            <td th:text="${account.accountType}"></td>
+		            <td th:text="${#dates.format(new java.util.Date(account.openingDate))}"></td>
+		            <td th:text="${account.amount}"></td>		
+		            <td>		         
+		            	<form class="add-card-form">
+		            		<input type = "number" name = "foreignKey" id = "foreignKey" th:value="${account.primaryKey}" hidden = "hidden"/>
+		            		<button type="submit" class="btn btn-info">
+		            			Add Card
+		            		</button>		         
+		            	</form>
+		            </td>
+		            <td>
+		            	<form class = "view-card-form">
+		            		<input type = "text" name = "foreignKey" id = "foreignKey" th:value="${account.primaryKey}" hidden = "hidden"/>
+		            		<button type="submit" class="btn btn-success">
+		            			View Cards
+		            		</button>
+		            	</form>
+		            </td>    
+		        </tr>
+		    </table>
+		</div>
+
+		
+		<!-- Add Card Modal -->
+		<div class="modal" id="addCardModal" tabindex="-1" role="dialog" aria-labelledby="addCardModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="addCardModalLabel">Add Card</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<!-- Add Card Modal Body -->
+					<div class="modal-body">
+						<form class="login100-form validate-form" id = "add-card-form-modal">
+							<div class="wrap-input100 validate-input m-b-26" data-validate="Card type is required">
+								<span class="label-input100">Card Type</span>
+								<input class="input100" id="cardType" type="text" placeholder="Card Type">
+								<span class="focus-input100"></span>
+							</div>
+							<div class="wrap-input100 validate-input m-b-18" data-validate = "Maximum Limit is required">
+								<span class="label-input100">Maximum Limit</span>
+								<input class="input100" type="number" id="maximumLimit" step = "0.0000001" placeholder="Maximum Limit">
+								<span class="focus-input100"></span>
+							</div>
+							<div class="container-login100-form-btn">
+								<button class="login100-form-btn">
+									Add Card
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--===============================================================================================-->
+			<script th:src="@{js/bankingApp.js}"></script>
+		<!--===============================================================================================-->
+			<script th:src="@{vendor/jquery/jquery-3.2.1.min.js}"></script>
+		<!--===============================================================================================-->
+			<script th:src="@{vendor/animsition/js/animsition.min.js}"></script>
+		<!--===============================================================================================-->
+			<script th:src="@{vendor/bootstrap/js/popper.js}"></script>
+			<script th:src="@{vendor/bootstrap/js/bootstrap.min.js}"></script>
+		<!--===============================================================================================-->
+			<script th:src="@{vendor/select2/select2.min.js}"></script>
+		<!--===============================================================================================-->
+			<script th:src="@{vendor/daterangepicker/moment.min.js}"></script>
+			<script th:src="@{vendor/daterangepicker/daterangepicker.js}"></script>
+		<!--===============================================================================================-->
+			<script th:src="@{vendor/countdowntime/countdowntime.js}"></script>
+		<!--===============================================================================================-->
+			<script th:src="@{js/main.js}"></script>
+		<!--===============================================================================================-->
+	</body>
+</html>
