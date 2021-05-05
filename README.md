@@ -1,6 +1,6 @@
 # OnlineBankingMicroService
 Read me 
-get lost
+
 https://www.diffen.com/difference/GET-vs-POST-HTTP-Requests
 https://restfulapi.net/http-methods/
 http://www.wideskills.com/spring/spring-bean-lifecycle
